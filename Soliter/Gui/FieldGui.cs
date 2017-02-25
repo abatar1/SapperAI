@@ -45,7 +45,9 @@ namespace Soliter.Gui
                 Text = Resources.FieldGui_Press_space_to_generate,
                 Left = 0,
                 Top = height * CellSize,
-                Size = new Size(CellSize * width, CellSize)
+                Size = new Size(CellSize * width, CellSize),
+                BorderStyle = BorderStyle.FixedSingle,
+                TextAlign = ContentAlignment.MiddleLeft
             };
             Controls.Add(_statusLabel);
         }
@@ -110,6 +112,7 @@ namespace Soliter.Gui
             // FieldGui
             // 
             this.ClientSize = new System.Drawing.Size(width * CellSize, height * CellSize);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.KeyPress += FieldGui_SpaceKeyPress;
             this.Name = "FieldGui";
             Text = Resources.FieldGui_Solitaire;

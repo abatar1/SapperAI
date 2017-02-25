@@ -63,10 +63,10 @@ namespace Soliter.Gui
             {
                 Options = new GameOptions
                 {
-                    GeneratorProbability = 0.1,
+                    GeneratorProbability = 0.3,
                     Height = 20,
                     Width = 20,
-                    NumberOfBombs = 50,
+                    NumberOfBombs = 70,
                     PlayerController = "ai.dll"
                 };
                 Close();
@@ -86,7 +86,7 @@ namespace Soliter.Gui
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "SetupGui";
-            Text = "Setup";
+            Text = Resources.SetupGui_Setup;
             this.ResumeLayout(false);
         }
     }

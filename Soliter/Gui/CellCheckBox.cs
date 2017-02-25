@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace Soliter.Gui
 {
@@ -9,6 +10,7 @@ namespace Soliter.Gui
             SetStyle(ControlStyles.Selectable, false);
             Appearance = Appearance.Button;
             AutoCheck = false;
+            TextAlign = ContentAlignment.MiddleCenter;
         }
 
         protected override bool ShowFocusCues => false;

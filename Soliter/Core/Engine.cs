@@ -17,7 +17,7 @@ namespace Soliter.Core
         public void GenerateMap()
         {
             Map = new Map(GameOptions.Width, GameOptions.Height);
-            Map.Generate(70, 0.2);
+            Map.Generate(GameOptions.NumberOfBombs, GameOptions.GeneratorProbability);
         }
 
         public void RunGame(GameOptions options)
