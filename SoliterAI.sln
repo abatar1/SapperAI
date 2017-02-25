@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoliterAI", "SoliterAI\SoliterAI.csproj", "{8A854E89-C4E9-4514-876D-A9A9DAC737AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soliter", "Soliter\Soliter.csproj", "{B9431C12-329D-4D43-969B-3FB3AB09603C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A854E89-C4E9-4514-876D-A9A9DAC737AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A854E89-C4E9-4514-876D-A9A9DAC737AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A854E89-C4E9-4514-876D-A9A9DAC737AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A854E89-C4E9-4514-876D-A9A9DAC737AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9431C12-329D-4D43-969B-3FB3AB09603C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9431C12-329D-4D43-969B-3FB3AB09603C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9431C12-329D-4D43-969B-3FB3AB09603C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9431C12-329D-4D43-969B-3FB3AB09603C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
