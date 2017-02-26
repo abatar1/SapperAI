@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Soliter.Primitives;
+using Sapper.Core.Primitives;
 
-namespace Soliter.Core.Generator
+namespace Sapper.Core
 {
     public class BicompSearchEngine
     {
-        private ColoredCell[][] _matrix;
-        private int _width;
-        private int _height;
+        private readonly ColoredCell[][] _matrix;
+        private readonly int _width;
+        private readonly int _height;
 
         internal class Island
         {
@@ -28,7 +28,7 @@ namespace Soliter.Core.Generator
         {
             public int Color { get; set; }
 
-            public ColoredCell(int value, Point position) : base(value, position)
+            public ColoredCell(int value, Point position) : base(position, value)
             {
             }
         }
@@ -57,9 +57,9 @@ namespace Soliter.Core.Generator
             return 1;
         }
 
-        private int FloodFill(int currentColor, Point pivot)
+        private int ColorFloodFill(int currentColor, Point pivot)
         {
-            var lookup = new List<Point> { pivot };
+            var lookup = new List<Point> {pivot};
             var count = 1;
             while (true)
             {
@@ -81,6 +81,49 @@ namespace Soliter.Core.Generator
             return count;
         }
 
+        public HashSet<Point> ValueFloodFill(int value, Point pivot)
+        {
+            var allowedNeighbors = new List<Point>();
+            var lookup = new List<Point> {pivot};
+            var result = new HashSet<Point>();
+
+            while (true)
+            {
+                foreach (var current in lookup)
+                {
+                    for (var x = Math.Max(current.X - 1, 0); x < Math.Min(current.X + 1, _width - 1); x++)
+                    {
+                        for (var y = Math.Max(current.Y - 1, 0); y < Math.Min(current.Y + 1, _height - 1); y++)
+                        {
+                            var p = new Point(x, y);
+                            if (_matrix[x][y].Value == 0)
+                            {
+                                allowedNeighbors.Add(p);
+                            }
+                        }
+                    }
+                }
+                if (allowedNeighbors.Count == 0) break;
+                foreach (var neighbor in allowedNeighbors)
+                {
+                    result.Add(neighbor);
+                }
+                lookup = new List<Point>(allowedNeighbors);
+                allowedNeighbors.Clear();
+            }
+            foreach (var current in allowedNeighbors)
+            {
+                for (var x = Math.Max(current.X - 1, 0); x < Math.Min(current.X + 1, _width - 1); x++)
+                {
+                    for (var y = Math.Max(current.Y - 1, 0); y < Math.Min(current.Y + 1, _height - 1); y++)
+                    {
+                        result.Add(new Point(x, y));                       
+                    }
+                }
+            }
+            return result;
+        }
+
         public Cell[][] BicompSearch()
         {
             var currentColor = 1;
@@ -93,7 +136,7 @@ namespace Soliter.Core.Generator
                     var p = new Point(x, y);
                     if (IsBadCell(p)) continue;
 
-                    var count  = FloodFill(currentColor, p);
+                    var count  = ColorFloodFill(currentColor, p);
                     islands.Add(new Island(count, currentColor));
                     currentColor++;
                 }

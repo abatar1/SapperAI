@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Soliter.Primitives
+namespace Sapper.Core.Primitives
 {
     public class Cell
     {
         public int Value { get; set; }
         public Point Position { get; }
+        public bool IsFogOfWar { get; set; }
+        public bool IsMarked { get; set; }
 
         public bool IsOutOfBorder => Value == OutOfBorderValue;
         public bool IsBomb => Value == BombValue;
-        public bool IsValue => Value != OutOfBorderValue && Value != BombValue;
+        public bool IsValue => Value < OutOfBorderValue;        
 
-        private const string OutOfBorder = " ";
-        private const int OutOfBorderValue = 10;
-        private const string Bomb = "B";
-        private const int BombValue = 11;
+        private const int OutOfBorderValue = 9;
+        private const int BombValue = 10;
+
+        private const int DefaultValue = 100;
 
         public void ToOutOfBorder()
         {
@@ -27,7 +29,7 @@ namespace Soliter.Primitives
             Value = BombValue;
         }
 
-        public Cell(int value, Point position)
+        public Cell(Point position, int value = DefaultValue)
         {
             Value = value;
             Position = position;

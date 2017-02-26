@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Soliter.Gui
+namespace Sapper.Gui
 {
     public class CellCheckBox : CheckBox
     {

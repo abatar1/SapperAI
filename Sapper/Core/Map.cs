@@ -1,10 +1,8 @@
-﻿using Soliter.Primitives;
-using System;
+﻿using System;
 using System.Drawing;
-using System.IO;
-using Soliter.Core.Generator;
+using Sapper.Core.Primitives;
 
-namespace Soliter.Core
+namespace Sapper.Core
 {
     public class Map
     {
@@ -25,49 +23,11 @@ namespace Soliter.Core
                 Matrix[x] = new Cell[Height];         
                 for (var y = 0; y < Height; y++)
                 {
-                    Matrix[x][y] = new Cell(0, new Point(x, y));
+                    Matrix[x][y] = new Cell(new Point(x, y), 0);
                 }
             }
 
             _generator = new Random();
-        }
-
-        public void ReadFromFile(string filename)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WriteToFile(string filename)
-        {
-            using (var stream = new StreamWriter(filename))
-            {
-                for (var x = 0; x < Width; x++)
-                {
-                    for (var y = 0; y < Height; y++)
-                    {
-                        stream.Write($"{Matrix[x][y]} ");
-                    }
-                    stream.Write(Environment.NewLine);
-                }
-            }
-        }
-
-        public void WriteToConsole()
-        {
-            var startColor = Console.ForegroundColor;
-            for (var x = 0; x < Width; x++)
-            {
-                for (var y = 0; y < Height; y++)
-                {
-                    if (Matrix[x][y].IsOutOfBorder) Console.ForegroundColor = ConsoleColor.Blue;
-                    else if (Matrix[x][y].IsBomb) Console.ForegroundColor = ConsoleColor.Red;
-                    else if (Matrix[x][y].Value != 0) Console.ForegroundColor = ConsoleColor.Green;
-                    else Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write($@"{Matrix[x][y]} ");
-                }
-                Console.Write(Environment.NewLine);
-            }
-            Console.ForegroundColor = startColor;
         }
 
         private void ProbChangeNeighbour(Point point, int range, double prob)
@@ -153,6 +113,11 @@ namespace Soliter.Core
 
             ProbCreateBombs(numberOfBombs);
             CalculateValues();
+        }
+
+        public bool IsBomb(Point point)
+        {
+            return Matrix[point.X][point.Y].IsBomb;
         }
     }
 }

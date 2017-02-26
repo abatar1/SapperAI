@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
-using Soliter.Core;
-using Soliter.Properties;
+using Sapper.Core;
+using Sapper.Properties;
 
-namespace Soliter.Gui
+namespace Sapper.Gui
 {
     public class SetupGui : Form
     {
@@ -16,17 +18,34 @@ namespace Soliter.Gui
         {
             const int yOffset = 20;
             const int buttonXSize = 50;
-            const int xOffset = 150;
+            const int xOffset = 200;
 
-            var properties = typeof(GameOptions).GetProperties();
-            InitializeComponent(xOffset * 2, yOffset * (properties.Length + 2));
+            var options = new GameOptions();
+            var properties = options.GetType().GetProperties();
             var pos = 0;
+
+            InitializeComponent(xOffset * 2, yOffset * (properties.Length + 1));           
 
             foreach (var property in properties)
             {
-                var label = new Label {Text = property.Name, Left = 0, Top = pos, Size = new Size(xOffset, yOffset) };
+                var displayName = ((DisplayNameAttribute)property.GetCustomAttribute(typeof(DisplayNameAttribute), true)).DisplayName;
+                var label = new Label
+                {
+                    Text = displayName,
+                    Left = 0,
+                    Top = pos,
+                    Size = new Size(xOffset, yOffset),
+                    BorderStyle = BorderStyle.FixedSingle
+                };
                 Controls.Add(label);
-                var textBox = new TextBox {Left = xOffset, Top = pos, Size = new Size(xOffset, yOffset), Tag = property.Name};
+                var textBox = new TextBox
+                {
+                    Left = xOffset,
+                    Top = pos,
+                    Size = new Size(xOffset, yOffset),
+                    Tag = property.Name,
+                    Text = property.GetValue(options, null).ToString()
+                };
                 _textBoxes.Add(textBox);
                 Controls.Add(textBox);
                 pos += yOffset;
@@ -38,7 +57,7 @@ namespace Soliter.Gui
                 Text = Resources.SetupGui_Setup,
                 Left = Width / 2 - buttonXSize / 2,
                 Top = pos,
-                Size = new Size(buttonXSize, yOffset),
+                Size = new Size(buttonXSize, yOffset)
             };
             setupButton.Click += (sender, args) =>
             {          
@@ -73,21 +92,27 @@ namespace Soliter.Gui
             };
 
             Controls.Add(setupButton);
-            Controls.Add(defaultButton);
         }
 
         private void InitializeComponent(int width, int height)
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
             // SetupGui
             // 
-            this.ClientSize = new System.Drawing.Size(width, height);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.Name = "SetupGui";
+            ClientSize = new Size(width, height);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            Name = "SetupGui";
             Text = Resources.SetupGui_Setup;
-            this.ResumeLayout(false);
+            KeyPress += (sender, args) =>
+            {
+                if (args.KeyChar != (char)Keys.Enter) return;
+
+                Close();
+            };
+            ResumeLayout(false);
+            StartPosition = FormStartPosition.CenterScreen;
         }
     }
 }

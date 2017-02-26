@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using Soliter.Core;
-using Soliter.Gui;
+using Sapper.Core;
+using Sapper.Gui;
 
-namespace Soliter
+namespace Sapper
 {
     public static class Program
     {

@@ -2,9 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Soliter.Interface;
 
-namespace Soliter.Core
+namespace Sapper.Core
 {
     public class BotLoader
     {

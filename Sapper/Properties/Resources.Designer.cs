@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Soliter.Properties {
+namespace Sapper.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Soliter.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Soliter.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sapper.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -71,38 +71,29 @@ namespace Soliter.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Game started!.
+        /// </summary>
+        internal static string FieldGui_Game_started {
+            get {
+                return ResourceManager.GetString("FieldGui_Game_started", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Generating....
         /// </summary>
-        internal static string FieldGui__Generating {
+        internal static string FieldGui_Generating {
             get {
-                return ResourceManager.GetString("FieldGui__Generating", resourceCulture);
+                return ResourceManager.GetString("FieldGui_Generating", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Prepearing board....
         /// </summary>
-        internal static string FieldGui__Prepearing_board {
+        internal static string FieldGui_Prepearing_board {
             get {
-                return ResourceManager.GetString("FieldGui__Prepearing_board", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Press space to start the game..
-        /// </summary>
-        internal static string FieldGui__Press_space_to_start_the_game {
-            get {
-                return ResourceManager.GetString("FieldGui__Press_space_to_start_the_game", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Game started!.
-        /// </summary>
-        internal static string FieldGui_Game_started {
-            get {
-                return ResourceManager.GetString("FieldGui_Game_started", resourceCulture);
+                return ResourceManager.GetString("FieldGui_Prepearing_board", resourceCulture);
             }
         }
         
@@ -116,11 +107,48 @@ namespace Soliter.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Solitaire.
+        ///   Ищет локализованную строку, похожую на Press space to start the game..
         /// </summary>
-        internal static string FieldGui_Solitaire {
+        internal static string FieldGui_Press_space_to_start_the_game {
             get {
-                return ResourceManager.GetString("FieldGui_Solitaire", resourceCulture);
+                return ResourceManager.GetString("FieldGui_Press_space_to_start_the_game", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sapper.
+        /// </summary>
+        internal static string FieldGui_Sapper {
+            get {
+                return ResourceManager.GetString("FieldGui_Sapper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You lose :(. Press space and try again!.
+        /// </summary>
+        internal static string FieldGui_You_lose_Press_space_and_try_again {
+            get {
+                return ResourceManager.GetString("FieldGui_You_lose_Press_space_and_try_again", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You won! :). Press space and try again!.
+        /// </summary>
+        internal static string FieldGui_You_won_Press_space_and_try_again {
+            get {
+                return ResourceManager.GetString("FieldGui_You_won_Press_space_and_try_again", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FlagImage {
+            get {
+                object obj = ResourceManager.GetObject("FlagImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
