@@ -39,7 +39,6 @@ namespace Sapper.Gui
             };
             _gameWorker.DoWork += (sender, args) =>
             {
-                _engine.GenerateMap();
                 status = _engine.RunGame();
             };
             _gameWorker.RunWorkerCompleted += (sender, args) =>
@@ -101,32 +100,31 @@ namespace Sapper.Gui
 
             foreach (var cellBox in _cells)
             {
-                var pos = (Point)cellBox.Tag;
-                var cell = turn.View.Field[pos.X][pos.Y];
+                var cell = turn.View.CellAt((Point)cellBox.Tag);
 
+                if (cell.IsOutOfBorder)
+                {
+                    cellBox.Visible = false;
+                    continue;
+                }
+                if (cell.IsMarked)
+                {
+                    cellBox.BackgroundImage = new Bitmap(Resources.FlagImage);
+                    cellBox.BackgroundImageLayout = ImageLayout.Stretch; ;
+                }
                 if (cell.IsFogOfWar) continue;
 
-                if (cell.IsOutOfBorder) cellBox.Checked = true;
+                cellBox.Checked = true;
 
                 if (cell.IsBomb)
                 {
                     cellBox.BackgroundImage = new Bitmap(Resources.BombImage);
-                    cellBox.BackgroundImageLayout = ImageLayout.Stretch;
+                    cellBox.BackgroundImageLayout = ImageLayout.Stretch;                   
                 }
-                else if (cell.IsMarked)
+                if (cell.IsValue)
                 {
-                    cellBox.BackgroundImage = new Bitmap(Resources.FlagImage);
-                    cellBox.BackgroundImageLayout = ImageLayout.Stretch;
-                }
-                else if (cell.IsValue)
-                {
-                    cellBox.Text = cell.Value.ToString();
-                    if (cell.Value == 0)
-                        cellBox.ForeColor = Color.Black;
-                    else if (cell.Value < 5)
-                        cellBox.ForeColor = Color.Green;
-                    else
-                        cellBox.ForeColor = Color.Red;
+                    if (cell.Value != 0) cellBox.Text = cell.Value.ToString();
+                    cellBox.ForeColor = cell.Value < 5 ? Color.Green : Color.Red;
                 }
             }
         }
@@ -136,7 +134,7 @@ namespace Sapper.Gui
             SuspendLayout();
             // 
             // FieldGui
-            // 
+            //             
             ClientSize = new Size(width * CellSize, height * CellSize);
             MaximizeBox = false;
             FormBorderStyle = FormBorderStyle.FixedDialog;

@@ -14,7 +14,7 @@ namespace Sapper.Core
         public double GeneratorProbability { get; set; } = 0.1;
 
         [DisplayName("Число бомб")]
-        public int NumberOfBombs { get; set; } = 20;
+        public int NumberOfBombs { get; set; } = 50;
 
         [DisplayName("Задержка на ход в миллисекундах")]
         public int DelayInMilliseconds { get; set; } = 2000;

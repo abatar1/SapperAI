@@ -48,9 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BicompSearchEngine.cs" />
+    <Compile Include="Core\Search\BicompColorSearch.cs" />
     <Compile Include="Core\BotLoader.cs" />
     <Compile Include="Core\Primitives\Turn.cs" />
+    <Compile Include="Core\Search\BicompSearch.cs" />
+    <Compile Include="Core\Search\BicompValueSearch.cs" />
     <Compile Include="Core\TurnEventArgs.cs" />
     <Compile Include="Gui\FieldGui.cs">
       <SubType>Form</SubType>

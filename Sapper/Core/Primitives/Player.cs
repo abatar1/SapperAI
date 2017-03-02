@@ -11,11 +11,10 @@
         public Turn Tick()
         {           
             var turn = _playerController.MakeTurn(View);
-            View.RefreshView(turn);
             return turn;
         }
 
-        public FieldView View { get; }
+        public FieldView View { get; set; }
         private readonly IPlayerController _playerController;
     }
 }

@@ -6,9 +6,10 @@ namespace SapperAI
 {
     public class PlayerBot : IPlayerController
     {
-        public Turn MakeTurn(FieldView levelView)
+        public Turn MakeTurn(FieldView view)
         {
-            return new Turn(Turn.States.Open, Point.Empty, "Hi!");
+            var p = new Point(view.Random.Next(view.Width - 1), view.Random.Next(view.Height - 1));
+            return new Turn(Turn.States.Open, p, p.ToString());
         }
     }
 }

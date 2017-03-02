@@ -1,59 +1,56 @@
 ﻿using System;
 using System.Drawing;
 using Sapper.Core.Primitives;
+using Sapper.Core.Search;
 
 namespace Sapper.Core
 {
     public class FieldView
     {       
-        public Cell[][] Field { get; }
         public int Width { get; }
         public int Height { get; }
+        public Random Random { get; }
 
-        private BicompSearchEngine _searcher;
+        private readonly Cell[][] _matrix;
+        private readonly BicompValueSearch _searcher;
+
+        public Cell CellAt(Point point)
+        {
+            var cell = _matrix[point.X][point.Y];
+            return cell.IsFogOfWar ? new Cell(point) : _matrix[point.X][point.Y];
+        }
 
         public FieldView(Map map)
         {
-            _searcher = new BicompSearchEngine(map);
+            Random = new Random();          
             Width = map.Width;
             Height = map.Height;
-            Field = new Cell[Width][];
-            for (var x = 0; x < Width; x++)
-            {
-                Field[x] = new Cell[Height];
-                for (var y = 0; y < Height; y++)
-                {
-                    Field[x][y] = new Cell(new Point(x, y));
-                    if (map.Matrix[x][y].IsOutOfBorder)
-                    {
-                        Field[x][y].ToOutOfBorder();
-                    }                      
-                    else
-                    {
-                        Field[x][y].IsFogOfWar = true;
-                    }
-                }
-            }
+
+            _matrix = map.Matrix;
+            _searcher = new BicompValueSearch(map);
         }
+
+        public bool IsFirstTurn { get; private set; } = true;
 
         public void RefreshView(Turn turn)
         {
+            IsFirstTurn = false;
+
             var pos = turn.Position;
             switch (turn.State)
             {
                 case Turn.States.Mark:
-                    Field[pos.X][pos.Y].IsMarked = !Field[pos.X][pos.Y].IsMarked;
+                    _matrix[pos.X][pos.Y].IsMarked = !_matrix[pos.X][pos.Y].IsMarked;
                     break;
 
                 case Turn.States.Open:
-                    Field[pos.X][pos.Y].IsFogOfWar = false;
+                    _matrix[pos.X][pos.Y].IsFogOfWar = false;
 
-                    if (!Field[pos.X][pos.Y].IsValue) return;
-                    if (Field[pos.X][pos.Y].Value != 0) return;
+                    if (_matrix[pos.X][pos.Y].Value != 0) return;
 
                     foreach (var position in _searcher.ValueFloodFill(0, pos))
                     {
-                        Field[position.X][position.Y].IsFogOfWar = false;
+                        _matrix[position.X][position.Y].IsFogOfWar = false;
                     }
                     break;
 

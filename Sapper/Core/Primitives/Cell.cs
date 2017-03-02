@@ -7,8 +7,9 @@ namespace Sapper.Core.Primitives
     {
         public int Value { get; set; }
         public Point Position { get; }
-        public bool IsFogOfWar { get; set; }
+        public bool IsFogOfWar { get; set; } = true;
         public bool IsMarked { get; set; }
+        public int Tag { get; set; }
 
         public bool IsOutOfBorder => Value == OutOfBorderValue;
         public bool IsBomb => Value == BombValue;
@@ -22,6 +23,7 @@ namespace Sapper.Core.Primitives
         public void ToOutOfBorder()
         {
             Value = OutOfBorderValue;
+            IsFogOfWar = false;
         }
 
         public void ToBomb()
@@ -35,7 +37,7 @@ namespace Sapper.Core.Primitives
             Position = position;
         }
 
-        public void RandomChange(Random generator, double prob)
+        public void ProbSetBorder(Random generator, double prob)
         {
             if (generator.NextDouble() < prob) Value = OutOfBorderValue;
         }

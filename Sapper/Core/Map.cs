@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using Sapper.Core.Primitives;
+using Sapper.Core.Search;
 
 namespace Sapper.Core
 {
@@ -30,15 +33,20 @@ namespace Sapper.Core
             _generator = new Random();
         }
 
-        private void ProbChangeNeighbour(Point point, int range, double prob)
+        private void ProbChangeNeighbour(Point point, double prob)
         {
             var x = point.X;
             var y = point.Y;
             if (!Matrix[x][y].IsOutOfBorder)
-                Matrix[x][y].RandomChange(_generator, prob);
+                Matrix[x][y].ProbSetBorder(_generator, prob);
         }
 
-        private void ProbCreateBorder(int range, double prob)
+        private bool IsInRange(Point point, Point initPoint, int radius)
+        {
+            return Math.Abs(point.X - initPoint.X) < radius && Math.Abs(point.Y - initPoint.Y) < radius;
+        }
+
+        private void ProbCreateBorder(int range, double prob, Point initPoint, int radius)
         {
             for (var y = 0; y < Height; y++)
             {
@@ -46,30 +54,40 @@ namespace Sapper.Core
                 {
                     if (Matrix[x][y].IsOnBorder(Width, Height) && range == 0)
                     {
-                        Matrix[x][y].RandomChange(_generator, prob);
+                        Matrix[x][y].ProbSetBorder(_generator, prob);
                         continue;
                     }
-                    if (!Matrix[x][y].IsOutOfBorder) continue;
+                    if (!Matrix[x][y].IsOutOfBorder || IsInRange(new Point(x, y), initPoint, radius)) continue;
 
-                    ProbChangeNeighbour(new Point(Math.Max(x - 1, 0), y), range, prob);
-                    ProbChangeNeighbour(new Point(Math.Min(x + 1, Width - 1), y), range, prob);
-                    ProbChangeNeighbour(new Point(x, Math.Max(y - range, 0)), range, prob);
-                    ProbChangeNeighbour(new Point(x, Math.Min(y + range, Height - 1)), range, prob);
+                    ProbChangeNeighbour(new Point(Math.Max(x - 1, 0), y), prob);
+                    ProbChangeNeighbour(new Point(Math.Min(x + 1, Width - 1), y), prob);
+                    ProbChangeNeighbour(new Point(x, Math.Max(y - range, 0)), prob);
+                    ProbChangeNeighbour(new Point(x, Math.Min(y + range, Height - 1)), prob);
                 }
             }
         }
 
-        private void ProbCreateBombs(int numberOfBombs)
+        private void ProbCreateBombs(int numberOfBombs, Point initPoint, int radius)
         {
+            var freeCells = new List<Cell>();
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    if (Matrix[x][y].IsValue && !IsInRange(new Point(x, y), initPoint, radius))
+                    {
+                        freeCells.Add(Matrix[x][y]);
+                    }                       
+                }
+            }
+            if (numberOfBombs > freeCells.Count) throw new ArgumentException("Too many bombs!");
+
             while (numberOfBombs > 0)
             {
-                var x = _generator.Next(Width);
-                var y = _generator.Next(Height);
-
-                if (Matrix[x][y].IsOutOfBorder || Matrix[x][y].IsBomb)
-                    continue;
-
-                Matrix[x][y].ToBomb();
+                var pos = _generator.Next(freeCells.Count);
+                var point = freeCells[pos].Position;
+                Matrix[point.X][point.Y].ToBomb();
+                freeCells.RemoveAt(pos);
                 numberOfBombs--;
             }            
         }
@@ -91,33 +109,43 @@ namespace Sapper.Core
             {
                 for (var y = 0; y < Height; y++)
                 {
-                    if (Matrix[x][y].IsBomb) UpAllNeighboursValue(new Point(x, y));
+                    if (Matrix[x][y].IsBomb)
+                        UpAllNeighboursValue(new Point(x, y));
                 }
             }
         }
 
-        public void Generate(int numberOfBombs, double prob)
+        public void WriteToFile(string filename)
         {
-            if (numberOfBombs > Width * Height) throw new ArgumentException("Too many bombs!");
+            using (var stream = new StreamWriter(filename))
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    for (var y = 0; y < Height; y++)
+                    {
+                        stream.Write($"{Matrix[x][y]} ");
+                    }
+                    stream.Write(Environment.NewLine);
+                }
+            }
+        }
 
+        public void Generate(int numberOfBombs, double prob, Point initPoint, int radius)
+        {           
             var steps = (int) (Width / 2.0);
             var step = prob / steps;
+
             for (var i = 0; i < steps; i++)
             {
                 var range = i == 0 ? 0 : 1;
-                ProbCreateBorder(range, prob);
+                ProbCreateBorder(range, prob, initPoint, radius);
                 prob -= step;
             }
-            var bs = new BicompSearchEngine(this);
+            var bs = new BicompColorSearch(this);
             Matrix = bs.BicompSearch();
 
-            ProbCreateBombs(numberOfBombs);
+            ProbCreateBombs(numberOfBombs, initPoint, radius);
             CalculateValues();
-        }
-
-        public bool IsBomb(Point point)
-        {
-            return Matrix[point.X][point.Y].IsBomb;
         }
     }
 }

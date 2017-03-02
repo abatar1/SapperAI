@@ -11,8 +11,10 @@ namespace Sapper.Gui
 {
     public class SetupGui : Form
     {
-        public GameOptions Options { get; private set; }
+        public GameOptions Options { get; }
+
         private readonly List<TextBox> _textBoxes = new List<TextBox>();
+        private readonly Button _setupButton;
 
         public SetupGui()
         {
@@ -23,7 +25,7 @@ namespace Sapper.Gui
             var options = new GameOptions();
             var properties = options.GetType().GetProperties();
             var pos = 0;
-
+            int tabCount = 1;
             InitializeComponent(xOffset * 2, yOffset * (properties.Length + 1));           
 
             foreach (var property in properties)
@@ -35,7 +37,7 @@ namespace Sapper.Gui
                     Left = 0,
                     Top = pos,
                     Size = new Size(xOffset, yOffset),
-                    BorderStyle = BorderStyle.FixedSingle
+                    BorderStyle = BorderStyle.FixedSingle              
                 };
                 Controls.Add(label);
                 var textBox = new TextBox
@@ -44,22 +46,25 @@ namespace Sapper.Gui
                     Top = pos,
                     Size = new Size(xOffset, yOffset),
                     Tag = property.Name,
-                    Text = property.GetValue(options, null).ToString()
+                    Text = property.GetValue(options, null).ToString(),
+                    TabIndex = tabCount
                 };
                 _textBoxes.Add(textBox);
                 Controls.Add(textBox);
                 pos += yOffset;
+                tabCount += 1;
             }
 
             Options = new GameOptions();
-            var setupButton = new Button
+            _setupButton = new Button
             {
                 Text = Resources.SetupGui_Setup,
                 Left = Width / 2 - buttonXSize / 2,
                 Top = pos,
-                Size = new Size(buttonXSize, yOffset)
+                Size = new Size(buttonXSize, yOffset),
+                TabIndex = 0
             };
-            setupButton.Click += (sender, args) =>
+            _setupButton.Click += (sender, args) =>
             {          
                 foreach (var text in _textBoxes)
                 {
@@ -69,29 +74,7 @@ namespace Sapper.Gui
                 }
                 Close();
             };
-
-            pos += yOffset;
-            var defaultButton = new Button
-            {
-                Text = Resources.SetupGui_Default,
-                Left = Width / 2 - buttonXSize / 2,
-                Top = pos,
-                Size = new Size(buttonXSize, yOffset),
-            };
-            defaultButton.Click += (sender, args) =>
-            {
-                Options = new GameOptions
-                {
-                    GeneratorProbability = 0.3,
-                    Height = 20,
-                    Width = 20,
-                    NumberOfBombs = 70,
-                    PlayerController = "ai.dll"
-                };
-                Close();
-            };
-
-            Controls.Add(setupButton);
+            Controls.Add(_setupButton);
         }
 
         private void InitializeComponent(int width, int height)
@@ -100,17 +83,12 @@ namespace Sapper.Gui
             // 
             // SetupGui
             // 
+            ActiveControl = _setupButton;
             ClientSize = new Size(width, height);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             Name = "SetupGui";
             Text = Resources.SetupGui_Setup;
-            KeyPress += (sender, args) =>
-            {
-                if (args.KeyChar != (char)Keys.Enter) return;
-
-                Close();
-            };
             ResumeLayout(false);
             StartPosition = FormStartPosition.CenterScreen;
         }
