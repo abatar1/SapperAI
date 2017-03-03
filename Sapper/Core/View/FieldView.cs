@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Sapper.Core.Primitives;
 using Sapper.Core.Search;
 
-namespace Sapper.Core
+namespace Sapper.Core.View
 {
     public class FieldView
     {       
@@ -17,7 +18,19 @@ namespace Sapper.Core
         public Cell CellAt(Point point)
         {
             var cell = _matrix[point.X][point.Y];
-            return cell.IsFogOfWar ? new Cell(point) : _matrix[point.X][point.Y];
+            return cell.IsFogOfWar ? new Cell(cell.Position) : _matrix[point.X][point.Y];
+        }
+
+        public IEnumerable<Cell> GetView()
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                for (var y = 0; y < Height; y++)
+                {
+                    var cell = _matrix[x][y];
+                    if (!cell.IsFogOfWar) yield return cell;
+                }
+            }
         }
 
         public FieldView(Map map)
@@ -52,6 +65,9 @@ namespace Sapper.Core
                     {
                         _matrix[position.X][position.Y].IsFogOfWar = false;
                     }
+                    break;
+
+                case Turn.States.Confused:
                     break;
 
                 default:

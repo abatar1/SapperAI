@@ -1,4 +1,5 @@
 ﻿using Sapper.Core.Primitives;
+using Sapper.Core.View;
 
 namespace Sapper.Core
 {

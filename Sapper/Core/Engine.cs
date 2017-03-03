@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using Sapper.Core.Primitives;
+using Sapper.Core.View;
 
 namespace Sapper.Core
 {
@@ -25,11 +26,6 @@ namespace Sapper.Core
             InProgress
         }
 
-        private int InitRadius()
-        {
-            return 5;
-        }
-
         private static int _correctMarks;
 
         private GameStatus GetGameStatus(Turn turn)
@@ -49,6 +45,7 @@ namespace Sapper.Core
 
                 if (_correctMarks == GameOptions.NumberOfBombs) return GameStatus.Won;
             }
+
             return GameStatus.InProgress;
         }
 
@@ -69,7 +66,7 @@ namespace Sapper.Core
 
                 if (isFirstTurn)
                 {
-                    Map.Generate(GameOptions.NumberOfBombs, GameOptions.GeneratorProbability, turn.Position, InitRadius());
+                    Map.Generate(GameOptions.NumberOfBombs, GameOptions.GeneratorProbability, turn.Position, GameOptions.RaduisWithoutBombs);
                     player.View = new FieldView(Map);                    
                     isFirstTurn = false;                   
                 }

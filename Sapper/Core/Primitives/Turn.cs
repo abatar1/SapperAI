@@ -17,6 +17,6 @@ namespace Sapper.Core.Primitives
 
         public string Message { get; }
 
-        public enum States { Mark, Open }                
+        public enum States { Mark, Open, Confused }                
     }
 }

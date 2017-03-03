@@ -1,4 +1,6 @@
-﻿namespace Sapper.Core.Primitives
+﻿using Sapper.Core.View;
+
+namespace Sapper.Core.Primitives
 {
     public class Player
     {

@@ -1,4 +1,6 @@
-﻿namespace Sapper.Core
+﻿using Sapper.Core.View;
+
+namespace Sapper.Core
 {
     public class TurnEventArgs
     {

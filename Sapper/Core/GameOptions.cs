@@ -19,6 +19,9 @@ namespace Sapper.Core
         [DisplayName("Задержка на ход в миллисекундах")]
         public int DelayInMilliseconds { get; set; } = 2000;
 
+        [DisplayName("Радиус без бомб")]
+        public int RaduisWithoutBombs { get; set; } = 5;
+
         [DisplayName("Путь к ИИ")]
         public string PlayerController { get; set; } = "SapperAI.dll";
     }

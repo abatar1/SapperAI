@@ -54,6 +54,7 @@
     <Compile Include="Core\Search\BicompSearch.cs" />
     <Compile Include="Core\Search\BicompValueSearch.cs" />
     <Compile Include="Core\TurnEventArgs.cs" />
+    <Compile Include="Core\View\AssociativeCell.cs" />
     <Compile Include="Gui\FieldGui.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,7 +77,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Core\Engine.cs" />
-    <Compile Include="Core\FieldView.cs" />
+    <Compile Include="Core\View\FieldView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
